@@ -50,7 +50,8 @@ task('pm2:stop', function () {
 
 // pm2 restart
 task('pm2:restart', function () {
-    run('{{ bin/pm2 }} restart {{ application }}');
+    run('{{ bin/pm2 }} stop {{ application }}');
+    run('{{ bin/pm2 }} start {{ release_path }}/bin/www -i max --name {{ application }}');
 });
 
 desc('Deploy your project');
