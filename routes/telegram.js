@@ -59,6 +59,18 @@ router.route('/getWebhookInfo')
 router.route('/webhook')
 .all((req, res, next) => {
     console.log(req.body);
+
+    if(req.body.update_id !== undefined) {
+        axios.post(config.api_link() + 'sendMessage', {
+            chat_id: req.body.message.chat.id,
+            text: 'Hello! A I\'m bot!'
+        })
+        .then(response => {
+            console.log(response.data);
+        }, error => next(error))
+        .catch(error => next(error));
+    }
+
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.json({ status: 'ok' });
