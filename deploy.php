@@ -16,7 +16,9 @@ set('repository', 'git@github.com:YaroslavMelnychenko/telegram-node.git');
 set('git_tty', false); 
 
 // Shared files/dirs between deploys 
-set('shared_files', []);
+set('shared_files', [
+    'config.js'
+]);
 set('shared_dirs', [
     'node_modules'
 ]);
@@ -54,6 +56,11 @@ task('pm2:restart', function () {
     run('{{ bin/pm2 }} start {{ release_path }}/bin/www -i max --name {{ application }}');
 });
 
+// upload config.js
+task('upload:config', function () {
+    runLocally('rsync -v -e ssh config.js deployer@amazon:{{ deploy_path }}/shared/config.js');
+})->desc('Environment setup');
+
 desc('Deploy your project');
 task('deploy', [
     'deploy:info',
@@ -61,6 +68,7 @@ task('deploy', [
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
+    'upload:config',
     'deploy:shared',
     'deploy:writable',
     'npm:install',

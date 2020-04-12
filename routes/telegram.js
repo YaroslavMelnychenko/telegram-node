@@ -11,10 +11,12 @@ router.route('/')
 .all((req, res, next) => {
     axios.post(config.api_link() + 'getMe')
     .then(response => {
-        res.statusCode = response.statusCode;
+        console.log(response.data);
+        res.statusCode = response.status;
         res.setHeader('Content-Type', 'application/json');
         res.json(response.data);
-    }).catch(error => next(error));
+    }, error => next(error))
+    .catch(error => next(error));
 });
 
 router.route('/config')
@@ -31,23 +33,34 @@ router.route('/config')
 
 router.route('/setWebhook')
 .all((req, res, next) => {
-    axios.get(config.api_link() + 'setWebhook', {
+    axios.post(config.api_link() + 'setWebhook', {
         url: config.bot_url()
     }).then(response => {
-        res.statusCode = response.statusCode;
+        console.log(response.data);
+        res.statusCode = response.status;
         res.setHeader('Content-Type', 'application/json');
         res.json(response.data);
-    }).catch(error => next(error));
+    }, error => next(error))
+    .catch(error => next(error));
 });
 
 router.route('/getWebhookInfo')
 .all((req, res, next) => {
     axios.get(config.api_link() + 'getWebhookInfo')
     .then(response => {
-        res.statusCode = response.statusCode;
+        console.log(response.data);
+        res.statusCode = response.status;
         res.setHeader('Content-Type', 'application/json');
         res.json(response.data);
-    }).catch(error => next(error));
+    }, error => next(error))
+    .catch(error => next(error));
+});
+
+router.route('/webhook')
+.all((req, res, next) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.json({ status: 'ok' });
 });
 
 module.exports = router;
