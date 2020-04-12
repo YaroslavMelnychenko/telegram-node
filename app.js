@@ -6,7 +6,12 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var telegramRouter = require('./routes/telegram');
 
+var config = require('./config');
+
 var app = express();
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -14,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/telegram', telegramRouter);
+app.use('/telegram/' + config.bot_token, telegramRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
