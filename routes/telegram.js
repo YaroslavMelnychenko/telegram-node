@@ -61,24 +61,39 @@ router.route('/webhook')
     console.log(req.body);
 
     if(req.body.update_id !== undefined) {
-        axios.post(config.api_link() + 'sendMessage', {
-            chat_id: req.body.message.chat.id,
-            text: 'Hello! A I\'m bot!',
-            reply_markup: {
-                inline_keyboard: [
-                    [
-                        {
-                            text: 'Test inline button',
-                            callback_data: 'this_is_callback'
-                        }
+
+        if(req.body.callback_query === undefined) {
+
+            axios.post(config.api_link() + 'sendMessage', {
+                chat_id: req.body.message.chat.id,
+                text: 'Hello! A I\'m bot!',
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Test inline button',
+                                callback_data: 'this_is_callback'
+                            }
+                        ]
                     ]
-                ]
-            }
-        })
-        .then(response => {
-            console.log(response.data);
-        }, error => next(error))
-        .catch(error => next(error));
+                }
+            })
+            .then(response => {
+                console.log(response.data);
+            }, error => next(error))
+            .catch(error => next(error));
+
+        } else {
+
+            axios.post(config.api_link() + 'answerCallbackQuery', {
+                callback_query_id: req.body.callback_query.id,
+                text: 'Callback successful'
+            }).then(response => {
+                console.log(response.data);
+            }, error => next(error))
+            .catch(error => next(error));
+
+        }
     }
 
     res.statusCode = 200;
