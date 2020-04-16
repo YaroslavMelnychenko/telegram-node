@@ -63,7 +63,17 @@ router.route('/webhook')
     if(req.body.update_id !== undefined) {
         axios.post(config.api_link() + 'sendMessage', {
             chat_id: req.body.message.chat.id,
-            text: 'Hello! A I\'m bot!'
+            text: 'Hello! A I\'m bot!',
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        {
+                            text: 'Test inline button',
+                            callback_data: 'this_is_callback'
+                        }
+                    ]
+                ]
+            }
         })
         .then(response => {
             console.log(response.data);
