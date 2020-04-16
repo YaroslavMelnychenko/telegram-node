@@ -85,10 +85,34 @@ router.route('/webhook')
 
         } else {
 
-            axios.post(config.api_link() + 'answerCallbackQuery', {
-                callback_query_id: req.body.callback_query.id,
-                text: 'Callback successful'
-            }).then(response => {
+            var answerData = {};
+
+            switch(req.body.callback_query.data) {
+                case 'this_is_callback':
+                    answerData = {
+                        callback_query_id: req.body.callback_query.id,
+                        text: 'Callback successful'
+                    }
+                    break;
+
+                case 'this_is_callback_alert':
+                    answerData = {
+                        callback_query_id: req.body.callback_query.id,
+                        show_alert: true,
+                        text: 'Callback error :)'
+                    }
+                    break;
+                
+                case 'this_is_callback_with_url':
+                    answerData = {
+                        callback_query_id: req.body.callback_query.id,
+                        url: 't.me/yarikmelnychenko',
+                        text: 'Callback error :)'
+                    }
+                    break;
+            }
+
+            axios.post(config.api_link() + 'answerCallbackQuery', answerData).then(response => {
                 console.log(response.data);
             }, error => next(error))
             .catch(error => next(error));
