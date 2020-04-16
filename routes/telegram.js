@@ -74,6 +74,18 @@ router.route('/webhook')
                                 text: 'Test inline button',
                                 callback_data: 'this_is_callback'
                             }
+                        ],
+                        [
+                            {
+                                text: 'Test inline button with alert',
+                                callback_data: 'this_is_callback_alert'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Test inline button with url',
+                                callback_data: 'this_is_callback_with_url'
+                            }
                         ]
                     ]
                 }
