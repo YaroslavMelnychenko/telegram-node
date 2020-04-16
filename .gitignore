@@ -1,3 +1,5 @@
 node_modules
 config.js
 vendor
+Nginx_1.17_vhost.conf
+deploy.php
